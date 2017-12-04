@@ -1,6 +1,8 @@
 package com.system.entity;
 
+
 import javax.persistence.*;
+
 
 @Entity
 @Table(name="user")

@@ -8,8 +8,11 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+
+
 @Repository
-public abstract  class UserDaoImpl implements UserDao {
+public class UserDaoImpl implements UserDao {
+
     @Autowired
     private SessionFactory sessionFactory;
 

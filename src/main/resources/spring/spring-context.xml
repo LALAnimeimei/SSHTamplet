@@ -16,7 +16,7 @@
     <context:property-placeholder ignore-unresolvable="true" location="classpath:db.properties" file-encoding="UTF-8"/>
 
     <!--使用Annotation自动注册Bean,base-package如果多个,是","分隔-->
-    <context:component-scan base-package="com.system.*">
+    <context:component-scan base-package="com.system">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
@@ -48,10 +48,11 @@
     <!--sessioFactory负责初始化Hibernate-->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan">
-            <list>
-                <value>com.system.entity</value>
-            </list>
+        <property name="packagesToScan" >
+           <list>
+            <value>com.system.entity</value>
+           </list>
+
         </property>
         <property name="hibernateProperties">
             <props>
@@ -62,6 +63,8 @@
             </props>
         </property>
     </bean>
+
+
 
     <bean id="transactonManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="dataSource" ref="dataSource"/>
