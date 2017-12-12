@@ -9,7 +9,14 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
-  
+  <servlet>
+    <servlet-name>reportservlet</servlet-name>
+    <servlet-class>com.system.servlet.ReportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>reportservlet</servlet-name>
+    <url-pattern>*.report</url-pattern>
+  </servlet-mapping>
   <!--配置前端控制器-->
   <servlet>
     <servlet-name>dispatcher</servlet-name>

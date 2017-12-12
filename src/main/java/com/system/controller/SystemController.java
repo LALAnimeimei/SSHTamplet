@@ -27,22 +27,23 @@ public class SystemController {
 
     @RequestMapping("/querydata")
     public ModelAndView querydata(HttpServletRequest request , HttpServletResponse response,ModelMap modelMap){
-        User user=userService.select(1);
-        List<Object[]> result=userService.query("select t.id,t.name,t.password ,b.content  from User as t,Blog as b where t.id=b.userId").list();
+//        User user=userService.select(1);
+//        List<Object[]> result=userService.query("select t.id,t.name,t.password ,b.content  from User as t,Blog as b where t.id=b.userId").list();
 //        modelMap.addAttribute("name",user.getName());
 //        modelMap.addAttribute("password",user.getPassword());
-        JSONObject obj=new JSONObject();
-        JSONArray jsonArray=new JSONArray();
-        for(int i=0;i<result.size();i++)
-        {
-            Object[] x=result.get(i);
-            obj.put("id",x[0].toString());
-            obj.put("name",x[1].toString());
-            obj.put("password",x[2].toString());
-            obj.put("content",x[3].toString());
-            jsonArray.add(obj);
-        }
-        modelMap.addAttribute("data",jsonArray.toString());
+//        JSONObject obj=new JSONObject();
+//        JSONArray jsonArray=new JSONArray();
+//        for(int i=0;i<result.size();i++)
+//        {
+//            Object[] x=result.get(i);
+//            obj.put("id",x[0].toString());
+//            obj.put("name",x[1].toString());
+//            obj.put("password",x[2].toString());
+//            obj.put("content",x[3].toString());
+//            jsonArray.add(obj);
+//        }
+//        modelMap.addAttribute("data",jsonArray.toString());
         return new ModelAndView("index",modelMap);
     }
+
 }

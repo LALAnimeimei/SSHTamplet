@@ -5,6 +5,7 @@ import com.system.dao.Impl.UserDaoImpl;
 import com.system.dao.UserDao;
 import com.system.entity.User;
 import com.system.service.UserService;
+import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserDao userDao;
 
+    public Session getSession(){return  userDao.getSession();}
     public User select(int id){
         return userDao.select(id);
     }
