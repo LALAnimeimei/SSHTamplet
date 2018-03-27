@@ -17,8 +17,8 @@
 
     <!--使用Annotation自动注册Bean,base-package如果多个,是","分隔-->
     <context:component-scan base-package="com.system">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-    </context:component-scan>
+    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+  </context:component-scan>
 
 
 
@@ -58,13 +58,21 @@
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
-                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/casual</prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
             </props>
+        </property>
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:com/system/entity/BlogEntity.hbm.xml</value>
+                <value>classpath:com/system/entity/UserEntity.hbm.xml</value>
+            </list>
         </property>
     </bean>
 
-
+    <!--<tx:annotation-driven transaction-manager="transactonManager"/>-->
 
     <bean id="transactonManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="dataSource" ref="dataSource"/>

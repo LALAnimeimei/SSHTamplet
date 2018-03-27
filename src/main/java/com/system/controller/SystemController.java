@@ -1,16 +1,23 @@
 package com.system.controller;
 
-import com.system.entity.User;
+import com.system.entity.UserEntity;
 import com.system.service.UserService;
 import net.sf.json.JSONObject;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import net.sf.json.JSONArray;
+import sun.misc.IOUtils;
+
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -45,5 +52,7 @@ public class SystemController {
 //        modelMap.addAttribute("data",jsonArray.toString());
         return new ModelAndView("index",modelMap);
     }
+
+
 
 }

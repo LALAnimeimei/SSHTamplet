@@ -2,15 +2,19 @@ package com.system.servlet;
 
 import com.system.dao.Impl.UserDaoImpl;
 import com.system.dao.UserDao;
+import com.system.entity.UserEntity;
 import com.system.service.Impl.UserServiceImpl;
 import com.system.service.UserService;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.persistence.Query;
@@ -56,6 +60,7 @@ public class ReportServlet extends HttpServlet {
     }
 
     @Override
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
@@ -79,22 +84,54 @@ public class ReportServlet extends HttpServlet {
             return;
         }
 //        Query q=userService.query("select t.id,t.name,t.password ,b.content  from User as t,Blog as b where t.id=b.userId");
-        List<Object[]> result=userService.query("select t.id,t.name,t.password ,b.content  from User as t,Blog as b where t.id=b.userId").list();
-        JSONObject obj=new JSONObject();
-        JSONArray jsonArray=new JSONArray();
-        for(int i=0;i<result.size();i++)
-        {
-            Object[] x=result.get(i);
-            obj.put("id",x[0].toString());
-            obj.put("name",x[1].toString());
-            obj.put("password",x[2].toString());
-            obj.put("content",x[3].toString());
-            jsonArray.add(obj);
+        if (reportId.equals("listdata")){
+            List<Object[]> result=userService.query("select t.id,t.name,t.password ,b.content  from UserEntity as t,BlogEntity as b where t.id=b.userid").list();
+            JSONObject obj=new JSONObject();
+            JSONArray jsonArray=new JSONArray();
+            for(int i=0;i<result.size();i++)
+            {
+                Object[] x=result.get(i);
+                obj.put("id",x[0].toString());
+                obj.put("name",x[1].toString());
+                obj.put("password",x[2].toString());
+                obj.put("content",x[3].toString());
+                jsonArray.add(obj);
+            }
+            JSONObject json=new JSONObject();
+            json.put("records",jsonArray.toString());
+            json.put("total",jsonArray.size());
+            putResponseData(response,"application/json","Cache-Control","no-store",json.toString());
+            return;
         }
-        JSONObject json=new JSONObject();
-        json.put("records",jsonArray.toString());
-        json.put("total",jsonArray.size());
-        putResponseData(response,"application/json","Cache-Control","no-store",json.toString());
-        return;
+        else if(reportId.equals("saveData")){
+            String data=request.getParameter("data");
+            Session session=userService.getSession();
+
+           Transaction transaction=null;
+            JSONArray jsonArray=JSONArray.fromObject(data);
+            for(int i=0;i<jsonArray.size();i++){
+                UserEntity userEntity=new UserEntity();
+                JSONObject json=JSONObject.fromObject(jsonArray.get(i));
+                userEntity.setId(Integer.parseInt(json.get("id").toString()));
+                userEntity.setName(json.get("name").toString());
+                userEntity.setPassword(json.get("password").toString());
+
+            transaction=session.beginTransaction();
+
+                try{
+
+                    userService.save(userEntity);
+                 transaction.commit();
+                }catch (Exception e){
+                    if(transaction!=null){
+                       transaction.rollback();
+                        e.printStackTrace();
+                    }
+                }finally {
+                    //...
+                }
+            }
+            session.close();
+        }
     }
 }
