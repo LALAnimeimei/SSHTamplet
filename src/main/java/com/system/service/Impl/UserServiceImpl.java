@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
         String data=request.getParameter("data");
         Session session=getSession();
 
+        //开启事务
         Transaction transaction=session.beginTransaction();
         JSONArray jsonArray=JSONArray.fromObject(data);
 
@@ -40,14 +41,20 @@ public class UserServiceImpl implements UserService {
 //        session.delete(duserEntity);
 
         //先查询，然后删除
-        UserEntity duserEntity = null;
+
         List list=null;
         try {
             list=  session.createQuery("from UserEntity as  u where u.name='d'").getResultList();
         }catch (NoResultException var10){
 
         }
+        UserEntity[] sd=new UserEntity[list.size()];
+        //取出查出的满足条件的对象数组
+        for(int j=0;j<list.size();j++){
+            sd[j]=(UserEntity) list.get(j);
+        }
 
+        //对每条修改的记录放到实体里去，这里其实可以只获取修改的那一个字段，其余由实体中获取
         for(int i=0;i<jsonArray.size();i++){
             UserEntity userEntity=new UserEntity();
             JSONObject json=JSONObject.fromObject(jsonArray.get(i));
@@ -56,16 +63,21 @@ public class UserServiceImpl implements UserService {
             userEntity.setPassword(json.get("password").toString());
 
             try{
-                if(i<list.size())
-                    duserEntity=(UserEntity) list.get(i);
+                //逐条删除
+                if(list.size()>0)
+                    for(int j=0;j<list.size();j++){
+                        session.delete(sd[j]);
+                    }
 
                 //这里之前commit一直没有生效又不报错的原因是数据库中的主键设置了自增
-                if(duserEntity!=null)
-                    session.delete(duserEntity);
+                //更新实体
                 session.update(userEntity);
+
+                //提交事务
                 transaction.commit();
-                duserEntity=null;
+                sd=null;
             }catch (Exception e){
+                //事务失败则回滚
                 if(transaction!=null){
                     transaction.rollback();
                     e.printStackTrace();

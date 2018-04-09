@@ -77,6 +77,7 @@ Ext.onReady(function () {
            params:{data:mdata},
            success:function (response) {
                console.log("yes");
+               Ext.Msg.alert('提示','数据修改成功！')
 
            }
        })
