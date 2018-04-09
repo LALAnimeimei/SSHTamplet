@@ -104,34 +104,7 @@ public class ReportServlet extends HttpServlet {
             return;
         }
         else if(reportId.equals("saveData")){
-            String data=request.getParameter("data");
-            Session session=userService.getSession();
-
-           Transaction transaction=null;
-            JSONArray jsonArray=JSONArray.fromObject(data);
-            for(int i=0;i<jsonArray.size();i++){
-                UserEntity userEntity=new UserEntity();
-                JSONObject json=JSONObject.fromObject(jsonArray.get(i));
-                userEntity.setId(Integer.parseInt(json.get("id").toString()));
-                userEntity.setName(json.get("name").toString());
-                userEntity.setPassword(json.get("password").toString());
-
-            transaction=session.beginTransaction();
-
-                try{
-
-                    userService.save(userEntity);
-                 transaction.commit();
-                }catch (Exception e){
-                    if(transaction!=null){
-                       transaction.rollback();
-                        e.printStackTrace();
-                    }
-                }finally {
-                    //...
-                }
-            }
-            session.close();
+//
         }
     }
 }

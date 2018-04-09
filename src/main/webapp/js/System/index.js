@@ -10,7 +10,7 @@ Ext.onReady(function () {
             {
                 // xtype: 'button', // 默认的工具栏类型
                 id:"button",
-                text: '按钮'
+                text: '提交'
             }
 
         ]
@@ -72,7 +72,7 @@ Ext.onReady(function () {
         }
         var mdata=Ext.encode(params);
        Ext.Ajax.request({
-           url:'xxx.report?reportId=saveData',
+           url:'./saveData.do',
            dataType:'json',
            params:{data:mdata},
            success:function (response) {

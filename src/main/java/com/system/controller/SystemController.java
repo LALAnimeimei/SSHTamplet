@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import net.sf.json.JSONArray;
 import sun.misc.IOUtils;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -51,6 +52,20 @@ public class SystemController {
 //        }
 //        modelMap.addAttribute("data",jsonArray.toString());
         return new ModelAndView("index",modelMap);
+    }
+
+    @RequestMapping("/saveData")
+    public  void saveDate(HttpServletRequest request,HttpServletResponse response){
+        userService.saveDate(request);
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        response.setHeader("Cache-Control","no-store");
+        try{
+            response.getWriter().write("true");
+            response.getWriter().close();
+        }catch (IOException var2){
+
+        }
     }
 
 
