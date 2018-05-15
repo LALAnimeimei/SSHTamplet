@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 
-@Component
+
 public interface UserService {
-    @Transactional
+
     void saveDate(HttpServletRequest request);
     UserEntity select(int id);
     Query query(String s);
